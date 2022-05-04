@@ -1,5 +1,5 @@
 # Start from the code-server Debian base image
-FROM dorowu/ubuntu-desktop-lxde-vnc
+FROM codercom/code-server:3.12.0
 
 USER coder
 
@@ -10,8 +10,8 @@ COPY deploy-container/settings.json .local/share/code-server/User/settings.json
 ENV SHELL=/bin/bash
 
 # Install unzip + rclone (support for remote filesystem)
-RUN sudo apt-get install docker.io
-RUN docker run -p 6070:80 dorowu/ubuntu-desktop-lxde-vnc
+RUN sudo apt-get update && sudo apt-get install unzip -y
+RUN sudo apt-get install wget -y
 RUN sudo apt-get install python -y
 RUN curl https://rclone.org/install.sh | sudo bash
 
@@ -37,7 +37,7 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # -----------
 
 # Port
-ENV PORT=6070
+ENV PORT=8080
 
 # Use our custom entrypoint script first
 COPY deploy-container/entrypoint.sh /usr/bin/deploy-container-entrypoint.sh
